@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>כל הפרשות</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;700&family=David+Libre:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#FDFBF6; --ink:#1c1712; --ink-soft:#55493c; --rule:#d8cbb3; --torah:#16120d; --accent:#7a3317; --accent-bg:#f7e9de; }
+:root[data-theme="dark"] { --bg:#0e0d0a; --ink:#f5ecd9; --ink-soft:#c9bc9f; --rule:#433a2b; --torah:#fbf4e6; --accent:#f3b58a; --accent-bg:#3a2416; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg:#0e0d0a; --ink:#f5ecd9; --ink-soft:#c9bc9f; --rule:#433a2b; --torah:#fbf4e6; --accent:#f3b58a; --accent-bg:#3a2416; }
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:'David Libre', serif; padding: calc(16px + env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px)); }
+h1 { font-family:'Frank Ruhl Libre', serif; font-size:1.5rem; margin: 0 0 14px; }
+.this-week { display:block; text-align:center; background:var(--accent-bg); color:var(--accent); border:1.5px solid var(--accent); border-radius:12px; padding:14px; font-family:'Frank Ruhl Libre', serif; font-weight:700; font-size:1.05rem; text-decoration:none; margin-bottom:20px; }
+.this-week .sub { display:block; font-weight:400; font-size:0.8rem; margin-top:3px; opacity:0.85; }
+ul { list-style:none; padding:0; margin:0; max-width:480px; }
+li { border-bottom:1px solid var(--rule); }
+li a { display:flex; justify-content:space-between; gap:10px; padding:12px 4px; color:var(--ink); text-decoration:none; }
+li a .en { color:var(--ink-soft); font-size:0.82rem; }
+li a:active { background: var(--accent-bg); }
+</style>
+</head>
+<body>
+<h1>כל הפרשות</h1>
+<a class="this-week" id="thisWeek" href="#">טוען...</a>
+<ul id="list"></ul>
+<script>
+const PARSHIOT = [{"slug": "bereshit", "title": "פרשת בראשית", "title_en": "Bereshit", "date": "2026-10-10"}, {"slug": "noach", "title": "פרשת נח", "title_en": "Noach", "date": "2026-10-17"}, {"slug": "lech-lecha", "title": "פרשת לך לך", "title_en": "Lech-Lecha", "date": "2026-10-24"}, {"slug": "vayera", "title": "פרשת וירא", "title_en": "Vayera", "date": "2026-10-31"}, {"slug": "chayei-sara", "title": "פרשת חיי שרה", "title_en": "Chayei Sara", "date": "2026-11-07"}, {"slug": "toldot", "title": "פרשת תולדות", "title_en": "Toldot", "date": "2026-11-14"}, {"slug": "vayetzei", "title": "פרשת ויצא", "title_en": "Vayetzei", "date": "2026-11-21"}, {"slug": "vayishlach", "title": "פרשת וישלח", "title_en": "Vayishlach", "date": "2026-11-28"}, {"slug": "vayeshev", "title": "פרשת וישב", "title_en": "Vayeshev", "date": "2026-12-05"}, {"slug": "miketz", "title": "פרשת מקץ", "title_en": "Miketz", "date": "2026-12-12"}, {"slug": "vayigash", "title": "פרשת ויגש", "title_en": "Vayigash", "date": "2026-12-19"}, {"slug": "vayechi", "title": "פרשת ויחי", "title_en": "Vayechi", "date": "2026-12-26"}, {"slug": "shemot", "title": "פרשת שמות", "title_en": "Shemot", "date": "2027-01-02"}, {"slug": "vaera", "title": "פרשת וארא", "title_en": "Vaera", "date": "2027-01-09"}, {"slug": "bo", "title": "פרשת בא", "title_en": "Bo", "date": "2027-01-16"}, {"slug": "beshalach", "title": "פרשת בשלח", "title_en": "Beshalach", "date": "2027-01-23"}, {"slug": "yitro", "title": "פרשת יתרו", "title_en": "Yitro", "date": "2027-01-30"}, {"slug": "mishpatim", "title": "פרשת משפטים", "title_en": "Mishpatim", "date": "2027-02-06"}, {"slug": "terumah", "title": "פרשת תרומה", "title_en": "Terumah", "date": "2027-02-13"}, {"slug": "tetzaveh", "title": "פרשת תצוה", "title_en": "Tetzaveh", "date": "2027-02-20"}, {"slug": "ki-tisa", "title": "פרשת כי תשא", "title_en": "Ki Tisa", "date": "2027-02-27"}, {"slug": "vayakhel", "title": "פרשת ויקהל", "title_en": "Vayakhel", "date": "2027-03-06"}, {"slug": "pekudei", "title": "פרשת פקודי", "title_en": "Pekudei", "date": "2027-03-13"}, {"slug": "vayikra", "title": "פרשת ויקרא", "title_en": "Vayikra", "date": "2027-03-20"}, {"slug": "tzav", "title": "פרשת צו", "title_en": "Tzav", "date": "2027-03-27"}, {"slug": "shmini", "title": "פרשת שמיני", "title_en": "Shmini", "date": "2027-04-03"}, {"slug": "tazria", "title": "פרשת תזריע", "title_en": "Tazria", "date": "2027-04-10"}, {"slug": "metzora", "title": "פרשת מצורע", "title_en": "Metzora", "date": "2027-04-17"}, {"slug": "achrei-mot", "title": "פרשת אחרי מות", "title_en": "Achrei Mot", "date": "2027-05-01"}, {"slug": "kedoshim", "title": "פרשת קדושים", "title_en": "Kedoshim", "date": "2027-05-08"}, {"slug": "emor", "title": "פרשת אמור", "title_en": "Emor", "date": "2027-05-15"}, {"slug": "behar", "title": "פרשת בהר", "title_en": "Behar", "date": "2027-05-22"}, {"slug": "bechukotai", "title": "פרשת בחוקתי", "title_en": "Bechukotai", "date": "2027-05-29"}, {"slug": "bamidbar", "title": "פרשת במדבר", "title_en": "Bamidbar", "date": "2027-06-05"}, {"slug": "nasso", "title": "פרשת נשא", "title_en": "Nasso", "date": "2027-06-19"}, {"slug": "beha-alotcha", "title": "פרשת בהעלותך", "title_en": "Beha'alotcha", "date": "2027-06-26"}, {"slug": "sh-lach", "title": "פרשת שלח", "title_en": "Sh'lach", "date": "2027-07-03"}, {"slug": "korach", "title": "פרשת קרח", "title_en": "Korach", "date": "2027-07-10"}, {"slug": "chukat-balak", "title": "פרשת חקת-בלק", "title_en": "Chukat-Balak", "date": "2027-07-17"}, {"slug": "pinchas", "title": "פרשת פנחס", "title_en": "Pinchas", "date": "2027-07-24"}, {"slug": "matot-masei", "title": "פרשת מטות-מסעי", "title_en": "Matot-Masei", "date": "2027-07-31"}, {"slug": "devarim", "title": "פרשת דברים", "title_en": "Devarim", "date": "2027-08-07"}, {"slug": "vaetchanan", "title": "פרשת ואתחנן", "title_en": "Vaetchanan", "date": "2027-08-14"}, {"slug": "eikev", "title": "פרשת עקב", "title_en": "Eikev", "date": "2027-08-21"}, {"slug": "re-eh", "title": "פרשת ראה", "title_en": "Re'eh", "date": "2027-08-28"}, {"slug": "shoftim", "title": "פרשת שופטים", "title_en": "Shoftim", "date": "2027-09-04"}, {"slug": "ki-teitzei", "title": "פרשת כי תצא", "title_en": "Ki Teitzei", "date": "2027-09-11"}, {"slug": "ki-tavo", "title": "פרשת כי תבוא", "title_en": "Ki Tavo", "date": "2027-09-18"}, {"slug": "nitzavim-vayeilech", "title": "פרשת נצבים-וילך", "title_en": "Nitzavim-Vayeilech", "date": "2027-09-25"}, {"slug": "ha-azinu", "title": "פרשת האזינו", "title_en": "Ha'Azinu", "date": "2027-10-09"}];
+let theme = null;
+try { theme = localStorage.getItem('theme'); } catch(e) {}
+if (theme) document.documentElement.setAttribute('data-theme', theme);
+
+const list = document.getElementById('list');
+for (const p of PARSHIOT) {
+  const li = document.createElement('li');
+  li.innerHTML = '<a href="' + p.slug + '.html"><span>' + p.title + '</span>' +
+                 '<span class="en">' + p.title_en + ' · ' + p.date + '</span></a>';
+  list.appendChild(li);
+}
+
+const now = new Date();  // local date, not UTC (UTC flips to tomorrow on Saturday evening in the US)
+const today = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+let current = PARSHIOT.find(p => p.date >= today) || PARSHIOT[PARSHIOT.length - 1];
+const tw = document.getElementById('thisWeek');
+if (current) {
+  tw.href = current.slug + '.html';
+  tw.innerHTML = '📖 ' + current.title + '<span class="sub">' + current.title_en + ' · ' + current.date + '</span>';
+} else {
+  tw.textContent = 'לא נמצאו פרשות';
+}
+</script>
+</body>
+</html>
